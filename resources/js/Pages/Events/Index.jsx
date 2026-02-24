@@ -88,7 +88,7 @@ function HeroCarousel({ events }) {
     }, [paused, total, cur]);
 
     if (total === 0) return (
-        <div className="w-full max-w-sm text-center py-16 text-slate-400 font-bold">
+        <div className="w-full max-w-sm py-16 font-bold text-center text-slate-400">
             Belum ada event tersedia
         </div>
     );
@@ -110,7 +110,7 @@ function HeroCarousel({ events }) {
                         {[ChevronLeftIcon, ChevronRightIcon].map((Icon, i) => (
                             <button key={i}
                                 onClick={() => goTo(i === 0 ? cur - 1 : cur + 1)}
-                                className="w-12 h-12 b-border rounded-2xl flex items-center justify-center bg-white hover:bg-black hover:text-white transition-colors duration-150"
+                                className="flex items-center justify-center w-12 h-12 transition-colors duration-150 bg-white b-border rounded-2xl hover:bg-black hover:text-white"
                                 style={{ boxShadow: '4px 4px 0 #000' }}>
                                 <Icon className="w-5 h-5" strokeWidth={2.5} />
                             </button>
@@ -119,19 +119,19 @@ function HeroCarousel({ events }) {
                 )}
             </div>
 
-            <div className="card-3d-scene hero-card-wrap relative">
+            <div className="relative card-3d-scene hero-card-wrap">
                 <div className="card-layer-yellow absolute inset-0 bg-yellow-400 b-border rounded-[2.5rem]"
                     style={{ transform: 'translateX(24px) translateY(24px) rotate(3deg)' }} />
                 <div className="absolute inset-0 bg-black b-border rounded-[2.5rem]"
                     style={{ transform: 'translateX(12px) translateY(12px)' }} />
 
                 <div key={flipKey} className="flip-in relative bg-white b-border rounded-[2.5rem] overflow-hidden">
-                    <div className="h-60 relative overflow-hidden" style={{ borderBottom: '4px solid #000' }}>
+                    <div className="relative overflow-hidden h-60" style={{ borderBottom: '4px solid #000' }}>
                         {item.poster
                             ? <img src={`/storage/${item.poster}`} alt={item.title}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110" />
                             : <div className={`w-full h-full bg-gradient-to-br from-indigo-400 to-blue-600 flex items-end pb-5 pl-6`}>
-                                <span className="font-fredoka font-bold text-white/20 leading-none select-none"
+                                <span className="font-bold leading-none select-none font-fredoka text-white/20"
                                     style={{ fontSize: '7.5rem' }}>
                                     {item.title.charAt(0)}
                                 </span>
@@ -155,11 +155,11 @@ function HeroCarousel({ events }) {
 
                         <div className="space-y-2 mb-7">
                             <p className="flex items-center gap-2.5 text-sm font-bold text-slate-500">
-                                <MapPinIcon className="w-4 h-4 flex-shrink-0" strokeWidth={2.5} />
+                                <MapPinIcon className="flex-shrink-0 w-4 h-4" strokeWidth={2.5} />
                                 <span className="truncate">{item.location}</span>
                             </p>
                             <p className="flex items-center gap-2.5 text-sm font-bold text-slate-500">
-                                <CalendarIcon className="w-4 h-4 flex-shrink-0" strokeWidth={2.5} />
+                                <CalendarIcon className="flex-shrink-0 w-4 h-4" strokeWidth={2.5} />
                                 {d.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })}
                             </p>
                         </div>
@@ -174,11 +174,11 @@ function HeroCarousel({ events }) {
             </div>
 
             {total > 1 && (
-                <div className="mt-10 flex items-center gap-4">
-                    <span className="font-black text-sm text-slate-500 tabular-nums w-6 text-center">
+                <div className="flex items-center gap-4 mt-10">
+                    <span className="w-6 text-sm font-black text-center text-slate-500 tabular-nums">
                         {String(cur + 1).padStart(2, '0')}
                     </span>
-                    <div className="flex-1 h-3 rounded-full overflow-hidden b-border-2 bg-slate-200">
+                    <div className="flex-1 h-3 overflow-hidden rounded-full b-border-2 bg-slate-200">
                         <div className="h-full rounded-full"
                             style={{
                                 width: `${((cur + 1) / total) * 100}%`,
@@ -187,7 +187,7 @@ function HeroCarousel({ events }) {
                                 transition: 'width 0.55s cubic-bezier(.22,1,.36,1)',
                             }} />
                     </div>
-                    <span className="font-black text-sm text-slate-400 tabular-nums w-6 text-center">
+                    <span className="w-6 text-sm font-black text-center text-slate-400 tabular-nums">
                         {String(total).padStart(2, '0')}
                     </span>
                 </div>
@@ -211,9 +211,9 @@ function EventCard({ event, idx, showAdminActions = false }) {
             <div className="relative flex-shrink-0 overflow-hidden h-52">
                 {event.poster
                     ? <img src={`/storage/${event.poster}`} alt={event.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110" />
                     : <div className={`w-full h-full bg-gradient-to-br ${acc.cover} flex items-end pb-4 pl-5`}>
-                        <span className="font-fredoka font-bold text-white/20 leading-none select-none"
+                        <span className="font-bold leading-none select-none font-fredoka text-white/20"
                             style={{ fontSize: '7rem' }}>
                             {event.title.charAt(0)}
                         </span>
@@ -238,7 +238,7 @@ function EventCard({ event, idx, showAdminActions = false }) {
                 <div className="absolute bottom-3.5 left-3.5">
                     <span className="inline-flex items-center gap-1.5 bg-white/95 b-border-2 px-3 py-1.5 rounded-full text-[10px] font-black text-slate-700 max-w-[200px]"
                         style={{ boxShadow: '2px 2px 0 #000' }}>
-                        <MapPinIcon className="w-3 h-3 flex-shrink-0" strokeWidth={3} />
+                        <MapPinIcon className="flex-shrink-0 w-3 h-3" strokeWidth={3} />
                         <span className="truncate">{event.location}</span>
                     </span>
                 </div>
@@ -293,14 +293,14 @@ function Ticker({ events }) {
     const items = [...events, ...events];
     if (events.length === 0) return null;
     return (
-        <div className="ticker-wrap py-4 overflow-hidden"
+        <div className="py-4 overflow-hidden ticker-wrap"
             style={{ background: '#FACC15', borderTop: '4px solid #000', borderBottom: '4px solid #000' }}>
             <div className="ticker-inner">
                 {items.map((e, i) => (
                     <span key={i} className="inline-flex items-center gap-3 px-6 text-sm font-black tracking-wider text-black uppercase">
                         <span></span>
                         <span>{e.title}</span>
-                        <span className="opacity-40 mx-2">|</span>
+                        <span className="mx-2 opacity-40">|</span>
                     </span>
                 ))}
             </div>
@@ -342,7 +342,7 @@ export default function EventsIndex({ auth, events, filters }) {
                 <div className="fixed inset-0 bg-dots" />
 
                 <header className="sticky top-0 z-50 px-4 pt-4 pb-3 sm:px-6">
-                    <nav className="mx-auto max-w-7xl bg-white b-border rounded-2xl px-5 sm:px-7 flex items-center justify-between"
+                    <nav className="flex items-center justify-between px-5 mx-auto bg-white max-w-7xl b-border rounded-2xl sm:px-7"
                         style={{ height: '68px', boxShadow: '6px 6px 0 #000' }}>
                         <Link href="/events" className="flex items-center gap-2.5">
                             <div className="flex items-center justify-center w-10 h-10 bg-yellow-400 b-border rounded-xl b-btn"
@@ -365,25 +365,25 @@ export default function EventsIndex({ auth, events, filters }) {
                     </nav>
                 </header>
 
-                <main className="relative z-10 px-4 sm:px-6 mx-auto max-w-7xl pb-12">
+                <main className="relative z-10 px-4 pb-12 mx-auto sm:px-6 max-w-7xl">
 
                     <div className="c-heroIn mt-8 bg-white b-border b-shadow rounded-[3.5rem] overflow-hidden relative">
                         <div className="absolute top-0 right-0 p-10 opacity-[0.04] select-none pointer-events-none overflow-hidden"
                             style={{ right: '-2rem', top: '-1rem' }}>
-                            <p className="font-fredoka font-bold leading-none text-black"
+                            <p className="font-bold leading-none text-black font-fredoka"
                                 style={{ fontSize: '20rem' }}>EVENT</p>
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-12" style={{ minHeight: '680px' }}>
-                            <div className="lg:col-span-7 p-8 md:p-14 text-white relative flex flex-col justify-center"
+                            <div className="relative flex flex-col justify-center p-8 text-white lg:col-span-7 md:p-14"
                                 style={{ background: '#5865F2', borderRight: '4px solid #000' }}>
 
-                                <div className="c-float absolute top-10 left-10 w-18 h-18 bg-yellow-400 b-border rounded-2xl flex items-center justify-center text-4xl"
+                                <div className="absolute flex items-center justify-center text-4xl bg-yellow-400 c-float top-10 left-10 w-18 h-18 b-border rounded-2xl"
                                     style={{ width: '72px', height: '72px', boxShadow: '6px 6px 0 #000' }}></div>
-                                <div className="c-floatB absolute bottom-16 right-16 bg-pink-400 b-border rounded-full flex items-center justify-center text-3xl"
+                                <div className="absolute flex items-center justify-center text-3xl bg-pink-400 rounded-full c-floatB bottom-16 right-16 b-border"
                                     style={{ width: '60px', height: '60px', boxShadow: '6px 6px 0 #000', animationDelay: '2s' }}></div>
 
-                                <div className="relative z-10 space-y-7 max-w-xl">
+                                <div className="relative z-10 max-w-xl space-y-7">
                                     <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-black tracking-[0.2em] uppercase"
                                         style={{
                                             background: 'rgba(255,255,255,0.18)',
@@ -413,9 +413,9 @@ export default function EventsIndex({ auth, events, filters }) {
                                         </h1>
                                     </div>
 
-                                    <p className="text-base leading-relaxed text-white/90 font-bold max-w-md">
+                                    <p className="max-w-md text-base font-bold leading-relaxed text-white/90">
                                         Workshop, hackathon, dan seminar terbaik daftar langsung,{' '}
-                                        <span className="text-yellow-300 font-black">gratis, tanpa login.</span>
+                                        <span className="font-black text-yellow-300">gratis, tanpa login.</span>
                                     </p>
 
                                     <a href="#events"
@@ -430,13 +430,13 @@ export default function EventsIndex({ auth, events, filters }) {
                                         onMouseEnter={e => { e.currentTarget.style.transform='translate(2px,2px)'; e.currentTarget.style.boxShadow='0px 0px 0 rgba(0,0,0,0.3)'; }}
                                         onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='5px 5px 0 rgba(0,0,0,0.3)'; }}>
                                         EXPLORE EVENTS
-                                        <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={3} />
+                                        <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={3} />
                                     </a>
 
                                     <div className="flex items-center gap-4 pt-2">
                                         <div className="flex -space-x-2">
                                             {['#fecaca', '#bfdbfe', '#bbf7d0'].map((bg, i) => (
-                                                <div key={i} className="w-9 h-9 rounded-full b-border-2 bg-white"
+                                                <div key={i} className="bg-white rounded-full w-9 h-9 b-border-2"
                                                     style={{ background: bg, boxShadow: '2px 2px 0 rgba(0,0,0,0.2)' }} />
                                             ))}
                                         </div>
@@ -445,21 +445,21 @@ export default function EventsIndex({ auth, events, filters }) {
 
                                     <div className="flex flex-wrap items-center gap-3 pt-1">
                                         <div className="bg-white/20 backdrop-blur-sm b-border-2 px-4 py-2.5 rounded-2xl text-center">
-                                            <p className="font-fredoka font-bold text-white tabular-nums"
+                                            <p className="font-bold text-white font-fredoka tabular-nums"
                                                 style={{ fontSize: '1.8rem', lineHeight: 1 }}>
                                                 {String((events||[]).length).padStart(2,'0')}
                                             </p>
                                             <p className="text-[9px] font-black uppercase tracking-tight text-white/70 mt-0.5">Total Events</p>
                                         </div>
                                         <div className="bg-white/20 backdrop-blur-sm b-border-2 px-4 py-2.5 rounded-2xl text-center">
-                                            <p className="font-fredoka font-bold text-white tabular-nums"
+                                            <p className="font-bold text-white font-fredoka tabular-nums"
                                                 style={{ fontSize: '1.8rem', lineHeight: 1 }}>
                                                 {String(publishedCount).padStart(2,'0')}
                                             </p>
                                             <p className="text-[9px] font-black uppercase tracking-tight text-white/70 mt-0.5">Open Now</p>
                                         </div>
                                         <div className="bg-white/20 backdrop-blur-sm b-border-2 px-4 py-2.5 rounded-2xl text-center">
-                                            <p className="font-fredoka font-bold text-white"
+                                            <p className="font-bold text-white font-fredoka"
                                                 style={{ fontSize: '1.8rem', lineHeight: 1 }}>
                                                 100%
                                             </p>
@@ -469,7 +469,7 @@ export default function EventsIndex({ auth, events, filters }) {
                                 </div>
                             </div>
 
-                            <div className="lg:col-span-5 bg-slate-50 p-8 md:p-12 flex flex-col justify-center items-center">
+                            <div className="flex flex-col items-center justify-center p-8 lg:col-span-5 bg-slate-50 md:p-12">
                                 <HeroCarousel events={events || []} />
                             </div>
                         </div>
@@ -479,11 +479,11 @@ export default function EventsIndex({ auth, events, filters }) {
                         <Ticker events={(events||[]).filter(e => e.status === 'PUBLISHED')} />
                     </div>
 
-                    <div id="events" className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-10">
+                    <div id="events" className="flex flex-col justify-between gap-5 mb-10 md:flex-row md:items-end">
                         <div>
                             <div className="flex items-center gap-3 mb-2">
-                                <span className="font-fredoka text-4xl font-bold text-slate-900">All Events</span>
-                                <span className="b-border-2 px-3 py-1 rounded-xl text-sm font-black text-white"
+                                <span className="text-4xl font-bold font-fredoka text-slate-900">All Events</span>
+                                <span className="px-3 py-1 text-sm font-black text-white b-border-2 rounded-xl"
                                     style={{ background: '#5865F2', boxShadow: '3px 3px 0 #000' }}>
                                     {filteredEvents.length}
                                 </span>
@@ -493,7 +493,7 @@ export default function EventsIndex({ auth, events, filters }) {
                             </p>
                         </div>
                         <div className="relative">
-                            <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" strokeWidth={2.5} />
+                            <MagnifyingGlassIcon className="absolute w-5 h-5 -translate-y-1/2 left-4 top-1/2 text-slate-400" strokeWidth={2.5} />
                             <input type="text" value={search} onChange={e => setSearch(e.target.value)}
                                 placeholder="Cari event atau lokasi..."
                                 className="w-full md:w-72 pl-11 pr-5 py-3.5 bg-white b-border rounded-2xl text-sm font-bold text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -502,15 +502,15 @@ export default function EventsIndex({ auth, events, filters }) {
                     </div>
 
                     {filteredEvents.length > 0
-                        ? <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+                        ? <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10">
                               {filteredEvents.map((event, idx) => (
                                   <EventCard key={event.id} event={event} idx={idx} />
                               ))}
                           </div>
-                        : <div className="flex flex-col items-center justify-center py-28 text-center">
-                              <div className="w-20 h-20 rounded-3xl bg-white b-border flex items-center justify-center text-4xl mb-5"
+                        : <div className="flex flex-col items-center justify-center text-center py-28">
+                              <div className="flex items-center justify-center w-20 h-20 mb-5 text-4xl bg-white rounded-3xl b-border"
                                   style={{ boxShadow: '6px 6px 0 #000' }}></div>
-                              <h3 className="font-fredoka text-2xl font-bold text-slate-800 mb-1">
+                              <h3 className="mb-1 text-2xl font-bold font-fredoka text-slate-800">
                                   {search ? 'Nggak Ketemu...' : 'Belum Ada Event'}
                               </h3>
                               <p className="text-sm font-bold text-slate-400">
@@ -519,19 +519,19 @@ export default function EventsIndex({ auth, events, filters }) {
                           </div>}
                 </main>
 
-                <footer className="mt-16 py-14 bg-white" style={{ borderTop: '4px solid #000' }}>
-                    <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center gap-5">
+                <footer className="mt-16 bg-white py-14" style={{ borderTop: '4px solid #000' }}>
+                    <div className="flex flex-col items-center gap-5 px-6 mx-auto text-center max-w-7xl">
                         <div className="flex items-center gap-2.5">
-                            <div className="w-10 h-10 bg-yellow-400 b-border rounded-xl flex items-center justify-center"
+                            <div className="flex items-center justify-center w-10 h-10 bg-yellow-400 b-border rounded-xl"
                                 style={{ boxShadow: '3px 3px 0 #000' }}>
                                 <BoltIcon className="w-5 h-5 text-black" strokeWidth={3} />
                             </div>
-                            <span className="font-fredoka text-2xl font-bold tracking-tight">EventHub.</span>
+                            <span className="text-2xl font-bold tracking-tight font-fredoka">EventHub.</span>
                         </div>
-                        <p className="text-sm font-bold text-slate-400 max-w-xs">
+                        <p className="max-w-xs text-sm font-bold text-slate-400">
                             Platform event kampus terbaik  gratis, fun, dan accessible!
                         </p>
-                        <div className="flex gap-3 flex-wrap justify-center">
+                        <div className="flex flex-wrap justify-center gap-3">
                             {['Workshop', 'Seminar', 'Hackathon', 'Kompetisi'].map(tag => (
                                 <span key={tag}
                                     className="b-border-2 px-3 py-1.5 rounded-xl text-xs font-black text-slate-600 bg-slate-50"
@@ -543,7 +543,7 @@ export default function EventsIndex({ auth, events, filters }) {
                         <div className="flex items-center gap-4 mt-2">
                             {['IG', 'TW'].map((s) => (
                                 <div key={s}
-                                    className="w-9 h-9 rounded-full b-border-2 bg-white flex items-center justify-center text-xs font-black cursor-pointer hover:bg-yellow-400 transition-colors"
+                                    className="flex items-center justify-center text-xs font-black transition-colors bg-white rounded-full cursor-pointer w-9 h-9 b-border-2 hover:bg-yellow-400"
                                     style={{ boxShadow: '2px 2px 0 #000' }}>
                                     {s}
                                 </div>
@@ -562,9 +562,9 @@ export default function EventsIndex({ auth, events, filters }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                     <div>
-                        <h2 className="font-fredoka text-3xl font-bold text-slate-900">Kelola Event</h2>
+                        <h2 className="text-3xl font-bold font-fredoka text-slate-900">Kelola Event</h2>
                         <p className="text-sm font-bold text-slate-400 mt-0.5">{(events||[]).length} event terdaftar</p>
                     </div>
                     {isAdmin && (
@@ -579,8 +579,8 @@ export default function EventsIndex({ auth, events, filters }) {
             <Head title="Events" />
             <style>{CSS}</style>
             <div className="py-6 sm:py-8" style={{ background: '#FFFDF0' }}>
-                <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
-                    <div className="bg-white b-border rounded-2xl p-4 flex flex-col sm:flex-row gap-3"
+                <div className="px-4 mx-auto space-y-6 max-w-7xl sm:px-6 lg:px-8">
+                    <div className="flex flex-col gap-3 p-4 bg-white b-border rounded-2xl sm:flex-row"
                         style={{ boxShadow: '5px 5px 0 #000' }}>
                         <div className="relative flex-1">
                             <MagnifyingGlassIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" strokeWidth={2.5} />
@@ -590,7 +590,7 @@ export default function EventsIndex({ auth, events, filters }) {
                         </div>
                         {isAdmin && (
                             <div className="flex flex-wrap items-center gap-2">
-                                <FunnelIcon className="w-4 h-4 text-slate-400 flex-shrink-0" strokeWidth={2.5} />
+                                <FunnelIcon className="flex-shrink-0 w-4 h-4 text-slate-400" strokeWidth={2.5} />
                                 {filterButtons.map(({ key, label }) => (
                                     <button key={key} onClick={() => handleFilterChange(key)}
                                         className={`b-btn b-border-2 px-3 py-1.5 rounded-xl text-[11px] font-black uppercase tracking-wider ${statusFilter === key ? 'text-white' : 'bg-white text-slate-600'}`}
@@ -610,19 +610,19 @@ export default function EventsIndex({ auth, events, filters }) {
                     </p>
 
                     {filteredEvents.length > 0
-                        ? <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+                        ? <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10">
                               {filteredEvents.map((event, idx) => (
                                   <EventCard key={event.id} event={event} idx={idx} showAdminActions={isAdmin} />
                               ))}
                           </div>
                         : <div className="bg-white b-border rounded-[2rem] py-24 text-center"
                                 style={{ boxShadow: '5px 5px 0 #000' }}>
-                              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-100 b-border flex items-center justify-center text-3xl"
+                              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-3xl rounded-2xl bg-slate-100 b-border"
                                   style={{ boxShadow: '4px 4px 0 #000' }}></div>
-                              <h3 className="font-fredoka text-2xl font-bold text-slate-800 mb-2">
+                              <h3 className="mb-2 text-2xl font-bold font-fredoka text-slate-800">
                                   {search ? 'Nggak Ketemu...' : 'Belum Ada Event'}
                               </h3>
-                              <p className="text-sm font-bold text-slate-400 mb-6">
+                              <p className="mb-6 text-sm font-bold text-slate-400">
                                   {search ? 'Coba kata kunci lain' : 'Mulai buat event pertama!'}
                               </p>
                               {isAdmin && !search && (
