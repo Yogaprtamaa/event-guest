@@ -1,573 +1,549 @@
-# 📘 Event Registration System
-### Laravel + Inertia.js + React + Tailwind + Prisma
+# EventHub - Campus Event System
 
----
-
-## ⚡ Quick Start (Dummy Mode)
-
-**Mau langsung test UI tanpa setup database?**
-
-```bash
-composer install && npm install
-cp .env.example .env && php artisan key:generate
-npm run dev    # Terminal 1
-php artisan serve # Terminal 2
-```
-
-**Buka:** `http://localhost:8000`
-
-Semua controller sudah pakai **dummy data**. Perfect untuk testing UI!  
-👉 Detail: [SETUP.md](SETUP.md)
+**Platform event kampus terbaik** — gratis, fun, dan accessible untuk semua mahasiswa.
 
 ---
 
 ## 🎯 Project Overview
 
-Sistem manajemen event kampus berbasis web yang memungkinkan:
+**EventHub** adalah sistem manajemen event kampus yang dirancang untuk memudahkan mahasiswa menemukan, mendaftar, dan mengikuti berbagai acara di kampus like workshops, hackathons, seminars, dan kompetisi — **semuanya gratis tanpa login wajib**.
 
-- ✅ **Admin** membuat dan mengelola event
-- ✅ **Peserta** mendaftar event dengan mudah
-- ✅ **Data peserta** tersimpan terstruktur di database
-- ✅ **Monitoring & Export** data dalam format CSV/Excel
-- ✅ **Dashboard Statistik** dengan visualisasi data
-- ✅ **Role-based Access Control** (Admin & User)
-
----
-
-## 🏗 Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| **Backend** | Laravel 10+ |
-| **Frontend** | React (via Inertia.js) |
-| **Styling** | TailwindCSS |
-| **ORM** | Prisma |
-| **Database** | MySQL / PostgreSQL |
-| **Auth** | Laravel Breeze (Inertia React) |
+### Key Features
+- ✅ Event discovery & filtering
+- ✅ Real-time participant tracking
+- ✅ Status management (Draft, Open, Closed)
+- ✅ Quota visualization with progress bars
+- ✅ Responsive design (mobile-first)
+- ✅ Admin event management dashboard
+- ✅ Auto-scrolling carousel (hero section)
+- ✅ 3D card flip animation
+- ✅ Neo-Brutalism design system
 
 ---
 
-## ⚙️ System Architecture
+## 🛠️ Tech Stack
 
-```
-Client (React + Tailwind)
-        ↓
-Inertia.js (Bridge)
-        ↓
-Laravel Controller
-        ↓
-Prisma ORM
-        ↓
-Database (MySQL/PostgreSQL)
-```
-
-**Laravel** tetap jadi HTTP handler dan routing.  
-**Prisma** handle database layer dan queries.  
-**React** render semua UI via Inertia.js.
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| **Backend** | Laravel | 10.x |
+| **Frontend** | React + Inertia.js | 18 + latest |
+| **Styling** | Tailwind CSS | 3.x |
+| **Build Tool** | Vite | 5.x |
+| **Database** | MySQL / PostgreSQL | Via Prisma |
+| **ORM** | Prisma | Latest |
+| **UI Icons** | Heroicons | @24/outline |
+| **Testing** | PHPUnit | Via Laravel |
 
 ---
 
-## 🚀 Installation Guide
+## 📁 Project Structure
 
-### 1️⃣ Prerequisites
-
-- PHP 8.1+
-- Composer
-- Node.js 18+ & npm
-- MySQL or PostgreSQL
-
-### 2️⃣ Clone & Setup
-
-```bash
-# Clone repository (if applicable)
-git clone <your-repo-url>
-cd event-system
-
-# Install PHP dependencies
-composer install
-
-# Install Node dependencies
-npm install
 ```
+event-system/
+├── app/
+│   ├── Models/
+│   │   └── User.php
+│   ├── Http/
+│   │   ├── Controllers/         # API & page controllers
+│   │   ├── Requests/            # Form validation
+│   │   ├── Middleware/
+│   │   └── Kernel.php
+│   ├── Providers/
+│   │   ├── EventServiceProvider.php  # Register event listeners
+│   │   └── RouteServiceProvider.php
+│   └── Console/
+│       └── Kernel.php           # Scheduled commands
+│
+├── resources/
+│   ├── js/
+│   │   ├── Pages/
+│   │   │   ├── Events/
+│   │   │   │   ├── Index.jsx    # ★ MAIN: Guest hero + event grid
+│   │   │   │   ├── Show.jsx     # Event detail page
+│   │   │   │   ├── Create.jsx   # Admin: create form
+│   │   │   │   └── Edit.jsx     # Admin: edit form
+│   │   │   └── Auth/
+│   │   ├── Layouts/
+│   │   │   └── AuthenticatedLayout.jsx
+│   │   ├── Components/
+│   │   ├── app.jsx              # Entry point
+│   │   └── bootstrap.js         # Inertia setup
+│   ├── css/
+│   │   └── app.css              # Global styles
+│   └── views/
+│       └── app.blade.php        # Blade layout
+│
+├── routes/
+│   ├── web.php                  # Web routes
+│   ├── api.php                  # API routes
+│   ├── auth.php                 # Auth routes
+│   └── channels.php             # Broadcasting
+│
+├── config/
+│   ├── app.php                  # App configuration
+│   ├── database.php             # DB config
+│   └── ... (other configs)
+│
+├── database/
+│   ├── migrations/              # Schema changes
+│   ├── factories/               # Model factories
+│   └── seeders/                 # Test data
+│
+├── prisma/
+│   └── schema.prisma            # Prisma schema
+│
+├── tailwind.config.js           # Tailwind configuration
+├── vite.config.js               # Vite bundler config
+├── package.json                 # NPM dependencies
+├── composer.json                # PHP dependencies
+└── README.md (this file)
 
-### 3️⃣ Environment Configuration
-
-```bash
-# Copy environment file
-cp .env.example .env
-
-# Generate application key
-php artisan key:generate
 ```
-
-Edit `.env` file:
-
-```env
-APP_NAME="Event Registration System"
-APP_ENV=local
-APP_DEBUG=true
-APP_URL=http://localhost:8000
-
-# Database Configuration (Laravel)
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=event_system
-DB_USERNAME=root
-DB_PASSWORD=
-
-# Database URL (Prisma)
-DATABASE_URL="mysql://root:@127.0.0.1:3306/event_system"
-```
-
-**Note:** Pastikan `DB_*` dan `DATABASE_URL` sesuai dengan database Anda.
-
-### 4️⃣ Database Setup
-
-```bash
-# Create database
-mysql -u root -p
-CREATE DATABASE event_system;
-EXIT;
-
-# Run Prisma migrations
-npx prisma migrate dev --name init
-
-# Generate Prisma Client
-npx prisma generate
-```
-
-### 5️⃣ Build Assets
-
-```bash
-# Development
-npm run dev
-
-# Production
-npm run build
-```
-
-### 6️⃣ Run Application
-
-```bash
-php artisan serve
-```
-
-Open browser: `http://localhost:8000`
 
 ---
 
-## 🗄 Database Schema (Prisma)
+## 🎨 Design System: Neo-Brutalism
 
-### **User Model**
-```prisma
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(USER)
-  events    Event[]  @relation("EventCreator")
-  createdAt DateTime @default(now())
+EventHub menggunakan **Neo-Brutalism** — aesthetic yang bold, unapologetic, dengan strong borders, shadows, dan monochromatic typography.
+
+### Core Principles
+1. **Bold Borders** — 4px solid black (`border: 4px solid #000`)
+2. **Offsetted Shadows** — 12px shadows dengan 45° angle (`box-shadow: 12px 12px 0px #000`)
+3. **High Contrast** — White backgrounds, black text, vibrant accents
+4. **Playful Colors** — Yellow (#FACC15), Indigo (#5865F2), Pink, Green as accents
+5. **Typography** — Fredoka (display) + Plus Jakarta Sans (body)
+
+### CSS Utility Classes
+```css
+.b-border      { border: 4px solid #000; }
+.b-border-2    { border: 2px solid #000; }
+.b-shadow      { box-shadow: 12px 12px 0px #000; }
+.b-shadow-md   { box-shadow: 8px 8px 0px #000; }
+.b-shadow-sm   { box-shadow: 4px 4px 0px #000; }
+.b-btn         { transition: all 0.12s ease; }
+  .b-btn:hover { transform: translate(2px,2px); box-shadow: 0; }
+```
+
+### Color Palette
+| Role | Color | Hex |
+|------|-------|-----|
+| Primary | Indigo | `#5865F2` |
+| Accent | Yellow | `#FACC15` |
+| Background | Cream | `#FFFDF0` |
+| Text | Black | `#000000` |
+| Muted | Gray | `#64748B` |
+
+### Typography
+```
+Display (Headlines):   Fredoka 700 — bold, friendly, human
+Body Text:             Plus Jakarta Sans 600 — clean, modern, legible
+```
+
+---
+
+## 📄 Core Pages
+
+### 1. **Events/Index.jsx** - Guest Homepage
+**File**: `resources/js/Pages/Events/Index.jsx` (666 lines)
+
+#### Layout: Hero + Event Grid
+
+```
+┌─────────────────────────────────────────────────┐
+│ Header (Sticky)                                 │
+├─────────────────────────────────────────────────┤
+│                  HERO SECTION                   │
+│  Blue Panel (7 col)  │  Carousel (5 col)        │
+│  • Headline          │  • Featured event card   │
+│  • CTA button        │  • Navigation arrows     │
+│  • Stats boxes (3)   │  • Progress bar          │
+│  • Avatar row        │                          │
+├─────────────────────────────────────────────────┤
+│           YELLOW TICKER (Auto-scroll)           │
+├─────────────────────────────────────────────────┤
+│        EVENT GRID (Responsive)                  │
+│  Events cards (1 col mobile > 3 cols desktop)   │
+├─────────────────────────────────────────────────┤
+│ Footer                                          │
+└─────────────────────────────────────────────────┘
+```
+
+#### Hero Left Panel (Blue #5865F2)
+**User sees:**
+- 🚀 Glass badge: "KAMPUS LIFE IS FUN!"
+- H1 headline: "Upgrade Skill" (white) + "Di Event Kampus." (yellow, underlined)
+- P: "Workshop, hackathon, dan seminar terbaik daftar langsung, **gratis, tanpa login.**"
+- CTA: White button "EXPLORE EVENTS →" (links to #events)
+- 3 Glass stat boxes:
+  - "04" Total Events
+  - "04" Open Now
+  - "100%" Gratis
+- Avatar row: 3 colored circles, "+2k teman bergabung!"
+
+#### Hero Carousel (Right Panel)
+- **Auto-rotates** every 4 seconds (pauses on hover)
+- **3D flip animation** when switching cards
+- Shows featured event card with:
+  - Poster image (or gradient fallback)
+  - Event title, location, date
+  - "AMBIL TIKET SEKARANG" button
+- **Progress bar** at bottom: `01 [===] 04`
+- **Navigation arrows** to manual browse
+
+#### Event Grid
+- **Cards per event:**
+  - Poster image / gradient cover
+  - Status badge (Open/Draft/Closed)
+  - Date widget (top-right)
+  - Location pill (bottom-left)
+  - Title (line-clamped)
+  - Quota bar with color coding:
+    - 🟢 Green (0-79%)
+    - 🟡 Yellow (80-99%)
+    - 🔴 Red (100% — "Penuh!")
+  - "Lihat Detail" button
+  - Animated on scroll in (staggered `.c-up`)
+
+#### Ticker Section
+- **Yellow bar** (#FACC15) with auto-scrolling event names
+- **Continuous loop** with duplicated items
+- **Pauses on hover**
+- Syntax: `★ Event Name | ★ Event Name | ...`
+
+#### Search & Filter (Guest)
+- Text input for event/location search
+- Real-time filtering
+
+#### Authenticated View (Admin Dashboard)
+- Same layout but with **admin actions:**
+  - Edit button on each event card
+  - Status filter buttons (All/Open/Draft/Closed)
+  - Create Event button
+  - Admin-only create/edit forms
+
+---
+
+### 2. **Events/Show.jsx** - Event Detail Page
+**Purpose:** Single event view with full info, similar neo-brutalism styling
+
+---
+
+### 3. **Events/Create.jsx & Edit.jsx** - Event Management Forms
+**Purpose:** Admin-only forms to create/edit events
+
+---
+
+## 🧩 Key Components
+
+### `HeroCarousel({ events })`
+Props:
+- `events` (Array) — list of Event objects
+
+Logic:
+- Filters for PUBLISHED + future events, fallback to first 6 events
+- Auto-rotates every 4s (unless paused)
+- Increments `flipKey` state to trigger 3D flip animation
+- Shows progress bar: `current / total`
+
+**3D Flip Animation:**
+```javascript
+@keyframes flipIn {
+  0%   { transform: rotateY(-90deg) scale(0.95); opacity: 0; }
+  60%  { transform: rotateY(8deg) scale(1.02); opacity: 1; }
+  100% { transform: rotateY(0deg) scale(1); opacity: 1; }
 }
 ```
 
-### **Event Model**
+---
+
+### `EventCard({ event, idx, showAdminActions })`
+Props:
+- `event` (Object) — Event data
+- `idx` (Number) — Index for animation stagger
+- `showAdminActions` (Boolean) — Show edit button?
+
+Features:
+- Animated entrance (`.c-up` with staggered delay)
+- Color-coded accents from `CARD_ACCENT` array (5 color schemes)
+- Quota progress bar with color states
+- Status badge (green/yellow/red)
+
+---
+
+### `Ticker({ events })`
+Props:
+- `events` (Array) — PUBLISHED events to scroll
+
+**Animation:**
+```css
+animation: ticker 22s linear infinite;
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+```
+
+---
+
+## 📊 Data Model
+
+### Event Schema
 ```prisma
 model Event {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String    @db.Text
+  id          String   @id @default(cuid())
+  title       String   @db.VarChar(255)
+  description String   @db.Text
   date        DateTime
-  location    String
-  quota       Int
-  poster      String?
-  status      EventStatus @default(DRAFT)
-  creator     User      @relation("EventCreator", fields: [creatorId], references: [id])
-  creatorId   Int
+  location    String   @db.VarChar(255)
+  poster      String?  @db.VarChar(255)
+  quota       Int      @default(50)
+  status      String   @default("DRAFT")  // PUBLISHED, DRAFT, CLOSED
+  
   participants Participant[]
+  _count      Count?
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
-```
 
-### **Participant Model**
-```prisma
 model Participant {
-  id        Int      @id @default(autoincrement())
-  name      String
-  nim       String
-  email     String
-  phone     String
-  jurusan   String?
-  angkatan  String?
-  status    ParticipantStatus @default(REGISTERED)
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  eventId   Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([eventId, email])
+  id      String @id @default(cuid())
+  eventId String
+  userId  String
+  event   Event  @relation(fields: [eventId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 }
 ```
 
-### **Enums**
-```prisma
-enum Role {
-  ADMIN
-  USER
-}
+### Status States
+- `PUBLISHED` — Open for registration (visible publicly)
+- `DRAFT` — Under preparation (admin only)
+- `CLOSED` — Registration ended (archived)
 
-enum EventStatus {
-  DRAFT
-  PUBLISHED
-  CLOSED
-}
+---
 
-enum ParticipantStatus {
-  REGISTERED
-  ATTENDED
-  CANCELLED
+## 🎭 Animations
+
+### 1. Float Animation (Hero Emojis)
+```css
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-18px) rotate(3deg); }
 }
+```
+
+### 2. Staggered Entrance (Event Cards)
+```css
+@keyframes up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Applied with animation-delay: idx * 60ms */
+```
+
+### 3. 3D Card Flip (Carousel)
+```css
+@keyframes flipIn {
+  0%   { transform: rotateY(-90deg) scale(0.95); opacity: 0; }
+  60%  { transform: rotateY(8deg) scale(1.02); opacity: 1; }
+  100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+/* Triggered by flipKey state change */
+```
+
+### 4. Button Hover (Neo-Brutalism)
+```css
+.b-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #000 !important;
+}
+/* Simulates "pressed" effect */
 ```
 
 ---
 
-## 🔐 Authentication & Roles
+## 🚀 Getting Started
 
-### **Role System**
-
-1. **ADMIN**
-   - Create, edit, delete events
-   - View all participants
-   - Export data
-   - Mark attendance
-   - Access dashboard statistics
-
-2. **USER** (Mahasiswa/Peserta)
-   - View published events
-   - Register for events
-   - View registration history
-
-### **Creating Admin User**
-
+### Prerequisites
 ```bash
-php artisan tinker
+Node.js 18+
+PHP 8.1+
+Composer
+MySQL/PostgreSQL
 ```
 
-```php
-$user = User::create([
-    'name' => 'Admin',
-    'email' => 'admin@example.com',
-    'password' => bcrypt('password'),
-    'role' => 'admin'
-]);
-```
+### Installation
 
----
+1. **Clone repository**
+   ```bash
+   git clone <repo-url>
+   cd event-system
+   ```
 
-## 🎨 Frontend Structure
+2. **Install dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
 
-```
-resources/js/
-├── Pages/
-│   ├── Dashboard/
-│   │   ├── Admin.jsx       # Admin dashboard with stats
-│   │   └── User.jsx        # User dashboard
-│   ├── Events/
-│   │   ├── Index.jsx       # Event listing
-│   │   ├── Create.jsx      # Create event form
-│   │   ├── Show.jsx        # Event detail & registration
-│   │   └── Edit.jsx        # Edit event form
-│   └── Participants/
-│       └── Index.jsx       # Participant management
-├── Components/
-│   └── (shared components)
-└── Layouts/
-    └── AuthenticatedLayout.jsx
-```
+3. **Setup environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
----
+4. **Setup database**
+   ```bash
+   npx prisma migrate dev
+   npx prisma db seed   # Optional: populate test data
+   ```
 
-## 🛣 API Routes
+5. **Run development server**
+   ```bash
+   # Terminal 1: Laravel dev server
+   php artisan serve
+   
+   # Terminal 2: Vite dev server
+   npm run dev
+   ```
 
-### **Public Routes**
-```php
-GET  /events              # List all published events
-GET  /events/{id}         # View event detail
-```
+6. **Open browser**
+   ```
+   http://localhost:8000
+   ```
 
-### **Authenticated Routes**
-```php
-POST /events/{id}/register   # Register for event
-```
-
-### **Admin-Only Routes**
-```php
-GET    /events/create                 # Show create form
-POST   /events                        # Store new event
-GET    /events/{id}/edit              # Show edit form
-PUT    /events/{id}                   # Update event
-DELETE /events/{id}                   # Delete event
-POST   /events/{id}/publish           # Publish event
-POST   /events/{id}/close             # Close event
-
-GET    /events/{id}/participants                  # List participants
-GET    /events/{id}/participants/export           # Export CSV
-POST   /events/{id}/participants/mark-attendance  # Mark attendance
-PUT    /events/{id}/participants/{pId}/status    # Update status
-```
-
----
-
-## 📊 Dashboard Features
-
-### **Admin Dashboard**
-- 📈 Total Events
-- 👥 Total Participants
-- ✅ Active Events Count
-- 📊 Registration Statistics (Chart)
-- 🔔 Recent Registrations
-
-### **User Dashboard**
-- 📋 My Registered Events
-- 🎫 Available Events
-- ✅ Registration Status
-
----
-
-## 🎯 Core Features
-
-### ✅ Event Management
-- Create event dengan poster upload
-- Set quota & location
-- Publish/Draft/Close status
-- Edit & delete event
-
-### ✅ Registration System
-- Simple registration form
-- Validation (no duplicate email per event)
-- Auto-check quota availability
-- Confirmation message
-
-### ✅ Participant Management
-- Search by name, NIM, email
-- Filter by status (Registered/Attended/Cancelled)
-- Bulk mark attendance
-- Export to CSV
-
-### ✅ Statistics & Monitoring
-- Real-time participant count
-- Registration trends
-- Status breakdown
-- Event activity tracking
-
----
-
-## 🔧 Development Commands
-
+### Build for Production
 ```bash
-# Run development server
-php artisan serve
-npm run dev
-
-# Run Prisma Studio (Database GUI)
-npx prisma studio
-
-# Generate Prisma Client after schema changes
-npx prisma generate
-
-# Create new migration
-npx prisma migrate dev --name migration_name
-
-# Reset database (WARNING: deletes all data)
-npx prisma migrate reset
-
-# Run tests
-php artisan test
-```
-
----
-
-## 📦 Deployment Guide
-
-### **1. Environment Setup**
-
-```env
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://yourdomain.com
-
-DATABASE_URL="mysql://user:password@host:3306/database"
-```
-
-### **2. Build Assets**
-
-```bash
-npm install
 npm run build
+php artisan optimize
 ```
 
-### **3. Optimize Laravel**
+---
 
-```bash
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+## 🔐 Authentication & Authorization
+
+### Routes
+- `GET /events` — Public event listing
+- `GET /events/{id}` — Public event detail
+- `POST /events` — Admin: create event (requires auth + admin role)
+- `PUT /events/{id}` — Admin: update event
+- `DELETE /events/{id}` — Admin: delete event
+
+### Middleware
+- `auth` — Requires authentication
+- `admin` — Requires admin role
+- Guest route — No authentication needed
+
+---
+
+## 🎨 Customization Guide
+
+### Change Primary Color
+1. Find `#5865F2` in code
+2. Replace in:
+   - `const CARD_ACCENT` (line ~70)
+   - CSS gradients
+   - Button colors
+
+Example:
+```javascript
+// Before
+{ btn: '#5865F2', bar: '#f97316', cover: 'from-violet-400 to-indigo-600' }
+
+// After (for purple)
+{ btn: '#7c3aed', bar: '#f97316', cover: 'from-purple-400 to-violet-600' }
 ```
 
-### **4. Run Migrations**
+### Add New Event Status
+1. Update database schema:
+   ```prisma
+   // In schema.prisma, update status field options
+   status String @default("DRAFT") // Add new value
+   ```
 
-```bash
-npx prisma migrate deploy
-npx prisma generate
-```
+2. Update `STATUS_CFG` object:
+   ```javascript
+   const STATUS_CFG = {
+     PUBLISHED: { color: '#4ade80', textColor: '#052e16', label: 'Open' },
+     UPCOMING:  { color: '#60a5fa', textColor: '#0c2340', label: 'Upcoming' },  // NEW
+     DRAFT:     { color: '#fef08a', textColor: '#713f12', label: 'Draft' },
+     CLOSED:    { color: '#fca5a5', textColor: '#7f1d1d', label: 'Closed' },
+   };
+   ```
 
-### **5. Set Permissions**
-
-```bash
-chmod -R 775 storage bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
+### Modify Carousel Auto-Rotate Interval
+```javascript
+// In HeroCarousel component, change: 4000 → milliseconds
+useEffect(() => {
+  if (paused || total <= 1) return;
+  const t = setInterval(() => goTo(cur + 1), 4000);  // ← Change this
+  return () => clearInterval(t);
+}, [paused, total, cur]);
 ```
 
 ---
 
 ## 🧪 Testing
 
+### Unit Tests (PHP)
 ```bash
-# Run all tests
 php artisan test
-
-# Run specific test file
-php artisan test tests/Feature/EventTest.php
-
-# With coverage
-php artisan test --coverage
+# or
+./vendor/bin/phpunit
 ```
 
----
-
-## 🔥 System Flow
-
-### **Admin Flow**
-```
-Login → Dashboard → Create Event → Set Details → Publish → Monitor Participants → Export Data
-```
-
-### **User Flow**
-```
-Browse Events → View Details → Register → Fill Form → Submit → Confirmation → Receive Email
-```
-
----
-
-## 📝 Key Files
-
-| File | Purpose |
-|------|---------|
-| `prisma/schema.prisma` | Database schema |
-| `routes/web.php` | Application routes |
-| `app/Http/Controllers/EventController.php` | Event logic |
-| `app/Http/Controllers/ParticipantController.php` | Participant logic |
-| `app/Services/PrismaService.php` | Prisma integration |
-| `resources/js/Pages/Events/` | Event UI components |
-| `app/Http/Middleware/EnsureUserIsAdmin.php` | Admin middleware |
-
----
-
-## 🐛 Troubleshooting
-
-### **Prisma Client Not Found**
+### React Component Testing
 ```bash
-npx prisma generate
-```
-
-### **Database Connection Error**
-- Check `.env` file
-- Verify `DATABASE_URL` format
-- Ensure database exists
-
-### **Assets Not Loading**
-```bash
-npm run build
-php artisan config:clear
-```
-
-### **Permission Denied**
-```bash
-chmod -R 775 storage
-chmod -R 775 bootstrap/cache
+npm test
 ```
 
 ---
 
-## 🎓 Usage Examples
+## 📱 Responsive Breakpoints
 
-### **Creating an Event**
-1. Login as admin
-2. Click "Create Event"
-3. Fill in event details
-4. Upload poster (optional)
-5. Choose status (Draft/Published)
-6. Click "Create Event"
+Using Tailwind CSS breakpoints:
 
-### **Registering for an Event**
-1. Browse events
-2. Click on an event
-3. Click "Register for This Event"
-4. Fill registration form
-5. Submit
-
-### **Managing Participants**
-1. Go to event detail (as admin)
-2. Click "View Participants"
-3. Search/filter participants
-4. Select participants
-5. Mark as attended or export
+| Screen | Cols | CSS |
+|--------|------|-----|
+| Mobile | 1 | `grid-cols-1` |
+| Tablet | 2 | `sm:grid-cols-2` |
+| Desktop | 3 | `lg:grid-cols-3` |
+| Hero Grid | Change at lg | `lg:grid-cols-12` |
 
 ---
 
-## 🚀 Future Enhancements
+## 🔄 Version History
 
-- [ ] Email notifications (Laravel Mail/Queue)
-- [ ] QR Code for check-in
-- [ ] Certificate auto-generation
-- [ ] Multi-event organizer support
-- [ ] Advanced analytics with charts
-- [ ] Mobile responsive optimization
-- [ ] API for mobile app
-- [ ] Payment integration
-
----
-
-## 📞 Support
-
-Kalau ada error atau butuh bantuan:
-1. Check dokumentasi ini dulu
-2. Lihat error log di `storage/logs/laravel.log`
-3. Run Prisma Studio: `npx prisma studio`
-4. Clear cache: `php artisan config:clear`
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0 | Feb 2026 | Initial launch |
+| | | • Neo-brutalism design |
+| | | • Hero carousel with 3D flip |
+| | | • Event grid with quota visualization |
+| | | • Admin dashboard |
 
 ---
 
-## 📜 License
+## 📞 Support & Issues
 
-This project is open-source under the MIT License.
+### Common Issues
 
----
+**Q: Carousel not rotating?**
+A: Check if `paused` state is true or `events` array is empty.
 
-## 👨‍💻 Credits
+**Q: Colors not applying?**
+A: Clear browser cache, rebuild CSS: `npm run build`
 
-Built with:
-- Laravel Framework
-- Inertia.js
-- React
-- TailwindCSS
-- Prisma ORM
+**Q: Event cards missing images?**
+A: Upload poster via admin panel, or check `poster` column in database.
 
 ---
 
-**Selamat ngoding! 🚀**
-#   e v e n t - g u e s t 
- 
- 
+## 📚 Additional Resources
+
+- [Tailwind CSS Docs](https://tailwindcss.com)
+- [Heroicons](https://heroicons.com)
+- [Inertia.js Guide](https://inertiajs.com)
+- [Laravel Docs](https://laravel.com/docs)
+- [React 18 Docs](https://react.dev)
+
+---
+
+**Created with ❤️ for campus life** — EventHub 2026
